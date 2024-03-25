@@ -19,6 +19,120 @@ div.users {
         box-shadow: 3px 5px 20px $BoxShadow;
         border-radius: 4px;
         margin: 1.5rem 0;
+        overflow-x: auto;
+        position: relative;
+        max-width: 100%;
+        white-space: nowrap;
+        padding: 2rem 1rem;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        table {
+            width: 99%;
+            border-collapse: collapse;
+            color: $Inactive;
+            margin: 0;
+
+            thead {
+                width: 100%;
+                font-weight: 500;
+
+                tr {
+                    th {
+                        text-align: left;
+                        padding-right: 1rem;
+
+                        div.head {
+
+                            display: flex;
+                            align-items: center;
+                            
+                            h6 {
+                                padding-right: 0.5rem;
+                                margin: 0;
+                            }
+
+                            .filter {
+                                cursor: pointer;
+                                width: 1.2rem;
+                                height: 1.2rem;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+            tbody {
+                font-size: 0.8rem;
+                font-weight: 500;
+
+                tr {
+                    border-bottom: 1px solid $InputBorder;
+
+                    td {
+                        text-align: left;
+                        padding: 1rem 1rem 0.7rem 0;
+
+                        .Inactive {
+                            color: $Inactive;
+                            background-color: #545f7d0f;
+                            padding: 0.7rem 1rem;
+                            border-radius: 32px;
+                            display: inline-block;
+
+                            p {
+                                margin: 0;
+                            }
+                        }
+
+                        .Pending {
+                            color: $Pending;
+                            background-color: #e9b2000f;
+                            padding: 0.7rem 1rem;
+                            border-radius: 32px;
+                            display: inline-block;
+
+                            p {
+                                margin: 0;
+                            }
+                        }
+
+                        .Active {
+                            color: $Active;
+                            background-color: #39cd620f;
+                            padding: 0.7rem 1rem;
+                            border-radius: 32px;
+                            display: inline-block;
+
+                            p {
+                                margin: 0;
+                            }
+                        }
+
+                        .Blacklisted {
+                            color: $Blacklisted;
+                            background-color: #e4033b0f;
+                            padding: 0.7rem 1rem;
+                            border-radius: 32px;
+                            display: inline-block;
+
+                            p {
+                                margin: 0;
+                            }
+                        }
+
+                        .options {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
 
