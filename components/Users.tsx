@@ -7,7 +7,7 @@ import { Stat } from '../utils/interfaces';
 import UserStats from './UserStats';
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { Clients } from '../api/api';
+import api from '../api/api';
 import { UserObject } from '../utils/interfaces';
 import { useEffect, useState } from 'react';
 
@@ -41,45 +41,99 @@ function Users() {
         },
     ]
 
+    // to store all users retrieved from api call 
     const [users, setUsers] = useState<UserObject[]>([]);
+    // to store users currently being displayed 
+    const [usersOnPage, setUsersOnPage] = useState<UserObject[]>([]);
+    // to store number of users currently being displayed 
+    const [usersToDisplay, setUsersToDisplay] = useState<number>(25);
+    // page number for pagination 
+    const [currentPageIndex, setCurrentPageIndex] = useState<number>(3)
+    // number of pages for pagination 
+    const[numberOfPages, setNumberOfPages] = useState<number>(20)
+    let currentUsers = [];
 
-    // useEffect(() => {
+    const showUsers = () => {
+        const firstIndex = (currentPageIndex - 1) * usersToDisplay;
+        const secondIndex = currentPageIndex * usersToDisplay;
+        setUsersOnPage(users.slice(firstIndex, secondIndex));
+        
+    }
 
-    //     // check local storage for users array and use it available 
-    //     if (localStorage.getItem('users')) {
+    useEffect(() => {
 
-    //         const data = JSON.parse(localStorage.getItem('users')!);
-    //         setUsers(data);
-    //         return;
+        // check local storage for users array and use it available 
+        if (localStorage.getItem('users')) {
 
-    //     } else {
+            const data = JSON.parse(localStorage.getItem('users')!);
 
-    //         // API call to get user data 
-    //         Clients.getClients().then(res => {
-    //             for (let i = 0; i < res.length; i++) {
-    //                 if (i % 2 === 0 || i % 3 === 0 ) {
-    //                     res[i].status = 'Active';
-    //                 } else if (i % 4 === 0 || i % 5 === 0 ) {
-    //                     res[i].status = 'Blacklisted';
-    //                 } else if (i % 6 === 0 || i % 7 === 0 ) {
-    //                     res[i].status = 'Inactive';
-    //                 } else {
-    //                     res[i].status = 'Pending'
-    //                 }
-    //             }
-
-    //             localStorage.setItem('users', JSON.stringify(res));
-    //             // setUsers(res: UserObject[]);
-    //             console.log(res);
-                
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
+            // mockapi.io allows only 100 mock responses for each endpoint 
+            // that is why I repeated the same 100 responses 5 times 
+            setUsers([
+                ...data,
+                ...data,
+                ...data,
+                ...data,
+                ...data,
+            ]);
             
-    //     }
+            return;
 
-    // }, []);
+        } else {
+            // if nothing in local Storage, get user data through api call 
+            const getUsers = async () => {
+                try {
+                    const res = await api.get('users');
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (i % 2 === 0 || i % 3 === 0 ) {
+                            res.data[i].status = 'Active';
+                        } else if (i % 4 === 0 || i % 5 === 0 ) {
+                            res.data[i].status = 'Blacklisted';
+                        } else if (i % 6 === 0 || i % 7 === 0 ) {
+                            res.data[i].status = 'Inactive';
+                        } else {
+                            res.data[i].status = 'Pending'
+                        }
+                    }
+
+                    localStorage.setItem('users', JSON.stringify(res.data))
+                    setUsers([
+                        ...res.data,
+                        ...res.data,
+                        ...res.data,
+                        ...res.data,
+                        ...res.data,
+                    ]);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            getUsers();
+            
+        }
+        
+    }, []);
+
+    // function to format date 
+    const formattedDate = (dateFromData: string) => {
+        const date = new Date(dateFromData);
+        const newFormat = date.toString()
+        return `${newFormat.slice(4, 9)}, ${newFormat.slice(10, 21)}`
+    }
+
+    // function to format phone number 
+    const formattedPhoneNumber = (phoneNumber: string) => {
+        return `${phoneNumber.slice(0, 13)}`
+    }
+
+    // function to format organization name 
+    // this function is not necessary and is strictly for visual consistency 
+    const formattedOrgName = (orgName: string) => {
+        return `${orgName.slice(0, 20)}`
+    }
+
+    
 
     return (
 
@@ -87,8 +141,8 @@ function Users() {
             <h2>Users</h2>
 
             <div className="user-stats">
-                {userStats.map((stat: Stat) => (
-                    <UserStats stat={stat} key={stat.id} />
+                {userStats.map((stat: Stat, index) => (
+                    <UserStats stat={stat} key={index} />
                 ))}
             </div>
 
@@ -136,19 +190,21 @@ function Users() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Lendsqr</td>
-                            <td>Adedeji</td>
-                            <td>Adedeji@Lendsqr.com</td>
-                            <td>09039335002</td>
-                            <td>May 15, 2020 10:00 AM</td>
-                            <td>
-                                <div className="Active">
-                                    <p>Active</p>
-                                </div>
-                            </td>
-                            <td><MoreVertOutlinedIcon className='options' /></td>
-                        </tr>
+                        {users.map((user, index) => (
+                            <tr key={index}>
+                                <td>{ formattedOrgName(user.orgName) }</td>
+                                <td>{ user.userName }</td>
+                                <td>{ user.email }</td>
+                                <td>{ formattedPhoneNumber(user.phoneNumber) }</td>
+                                <td>{ formattedDate(user.createdAt) }</td>
+                                <td>
+                                    <div className={user.status}>
+                                        <p>{ user.status }</p>
+                                    </div>
+                                </td>
+                                <td><MoreVertOutlinedIcon className='options' /></td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
