@@ -44,21 +44,19 @@ function Users() {
     // to store all users retrieved from api call 
     const [users, setUsers] = useState<UserObject[]>([]);
     // to store users currently being displayed 
-    const [usersOnPage, setUsersOnPage] = useState<UserObject[]>([]);
+    // const [usersOnPage, setUsersOnPage] = useState<UserObject[]>([]);
     // to store number of users currently being displayed 
-    const [usersToDisplay, setUsersToDisplay] = useState<number>(25);
+    const [usersToDisplay, setUsersToDisplay] = useState<string>('25');
     // page number for pagination 
-    const [currentPageIndex, setCurrentPageIndex] = useState<number>(3)
+    const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
     // number of pages for pagination 
-    const[numberOfPages, setNumberOfPages] = useState<number>(20)
-    let currentUsers = [];
+    const[numberOfPages, setNumberOfPages] = useState<number>(20);
 
-    const showUsers = () => {
-        const firstIndex = (currentPageIndex - 1) * usersToDisplay;
-        const secondIndex = currentPageIndex * usersToDisplay;
-        setUsersOnPage(users.slice(firstIndex, secondIndex));
-        
-    }
+    // const showUsers = () => {
+    //     const firstIndex = (currentPageIndex - 1) * usersToDisplay;
+    //     const secondIndex = currentPageIndex * usersToDisplay;
+    //     setUsersOnPage(users.slice(firstIndex, secondIndex));
+    // }
 
     useEffect(() => {
 
@@ -114,6 +112,15 @@ function Users() {
         }
         
     }, []);
+
+    const firstIndex = (currentPageIndex - 1) * +usersToDisplay;
+    const secondIndex = currentPageIndex * +usersToDisplay;
+
+    const usersOnPage = users.slice(firstIndex, secondIndex);
+
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setUsersToDisplay(`${event.target.value}`);
+    }
 
     // function to format date 
     const formattedDate = (dateFromData: string) => {
@@ -190,7 +197,7 @@ function Users() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
+                        {usersOnPage.map((user, index) => (
                             <tr key={index}>
                                 <td>{ formattedOrgName(user.orgName) }</td>
                                 <td>{ user.userName }</td>
@@ -207,6 +214,20 @@ function Users() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <p>Showing 
+                        <select value={ usersToDisplay } onChange={ handleSelect }>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                        out of { users.length }
+                    </p>
+                </div>
+                <div className="col"> Pagination levels</div>
             </div>
 
         </div>

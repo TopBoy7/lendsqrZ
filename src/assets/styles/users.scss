@@ -23,7 +23,7 @@ div.users {
         position: relative;
         max-width: 100%;
         white-space: nowrap;
-        padding: 2rem 1.5rem;
+        padding: 2rem 1.5rem 0.5rem 1.5rem;
 
         &::-webkit-scrollbar {
             display: none;
@@ -73,6 +73,10 @@ div.users {
 
                 tr {
                     border-bottom: 1px solid $InputBorder;
+
+                    &:last-of-type {
+                        border-bottom: none;
+                    }
 
                     td {
                         text-align: left;
@@ -133,6 +137,38 @@ div.users {
                 }
             }
 
+        }
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+
+        .col {
+            flex: 0 0 auto;
+            width: 50%;
+
+            &:nth-of-type(2) {
+                align-self: flex-end;
+            }
+
+            p {
+                font-size: 0.8rem;
+                font-weight: 500;
+                select {
+                    padding: 0.2rem 1rem 0.2rem 0.8rem;
+                    margin: auto 0.5rem;
+                    color: $DeepBlue;
+                    font-weight: 600;
+                    font-family: 'Work Sans', sans-serif;
+                    border: none;
+                    background-color: rgba(33,63,125,.1);
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
         }
     }
 }
