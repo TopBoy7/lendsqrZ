@@ -56,6 +56,7 @@ function Login() {
             </div>
 
             <div className="login-col">
+                <img src={logo} className='right-logo' alt="Lendsqr Logo" />
                 <div className="form">
                     <h1>Welcome!</h1>
                     <p>Enter details to login.</p>

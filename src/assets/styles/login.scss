@@ -30,9 +30,14 @@ div.login-row {
             height: 2rem;
         }
 
+        .right-logo {
+            display: none;
+        }
+
         .left-img {
             position: relative;
             top: 2rem;
+            max-width: 100%;
         }
 
         .form {
@@ -121,17 +126,52 @@ div.login-row {
 }
 
 @media (max-width: 992px) {
-    div.row {
+    div.login-row {
+        .login-col {
+            
+            .logo {
+                top: 3rem;
+                left: 3rem;
+                height: 1.5rem;
+            }
+    
+            &:nth-of-type(1) {
+                width: 40%;
+            }
+
+            &:nth-of-type(2) {
+                width: 60%;
+                padding: 2.5rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    div.login-row {
         display: flex;
         height: 100vh;
         width: 100vw;
         flex-wrap: wrap;
     
-        .col {
-            width: 100%;
+        .login-col {
+            width: 100% !important;
     
+            .right-logo {
+                display: block;
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+                height: 1.5rem;
+            }
+
             &:nth-of-type(1) {
                 display: none;
+            }
+
+            &:nth-of-type(2) {
+                width: 100%;
+                padding: 2rem;
             }
         }
     }
