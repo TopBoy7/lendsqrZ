@@ -1,0 +1,38 @@
+@import 'mixins';
+
+div.users {
+    padding: 3rem 2.5rem;
+    color: $DeepBlue;
+
+    h2 {
+        font-weight: 500;
+    }
+
+    .user-stats {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .user-info {
+        background: #FFFFFF;
+        border: 1px solid $LightBorder;
+        box-shadow: 3px 5px 20px $BoxShadow;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    div.users {
+        padding: 2rem 1rem;
+    
+        h2 {
+            font-weight: 500;
+        }
+    
+        .user-stats {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+}

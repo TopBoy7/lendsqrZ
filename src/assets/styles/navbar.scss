@@ -1,0 +1,161 @@
+@import 'mixins';
+
+nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+    box-shadow: 0 0 10px #0003;
+    z-index: 10;
+    // position: fixed;
+    color: $DeepBlue;
+
+    .logo-div {
+        flex: 0 0 auto;
+        width: 20%;
+        
+        * {
+            z-index: 1000;
+            cursor: pointer;
+        }
+    }
+
+    .search-div {
+        flex: 0 0 auto;
+        width: 50%;
+
+        .search {
+            display: flex;
+
+            input {
+                border: 1.5px solid $DeepBlue;
+                border-radius: 8px;
+                opacity: 20%;
+                color: $Inactive;
+                padding: 0.7rem 1.2rem;
+                width: 50%;
+                font-weight: 500;
+            }
+
+            button {
+                position: relative;
+                width: 2.5rem;
+                right: 2.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;  
+                border-top-left-radius: 0;
+                border-top-right-radius: 8px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 8px;
+                border: 0px;
+                background-color: $Cyan;
+                color: #FFF;
+                font-size: 0.5rem;
+                cursor: pointer;
+            }
+        }
+
+        img {
+            z-index: 1000;
+        }
+    }
+
+    .nav-right {
+        flex: 0 0 auto;
+        width: 30%;
+
+        .user-items {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            p {
+                text-decoration: underline;
+                font-size: 0.8rem;
+                margin-right: 2rem;
+            }
+
+            .notifications {
+                cursor: pointer;
+            }
+
+            .user-img {
+                border-radius: 50%;
+                margin-left: 2rem;
+                margin-right: 2rem;
+                cursor: pointer;
+            }
+            .username {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .search-div {
+        display: flex;
+        justify-content: center;
+        width: 40% !important;
+
+        .search {
+            display: none !important;
+        }
+    }
+
+    .nav-right {
+        width: 40% !important;
+
+        .user-items {
+
+            p {
+                display: none;
+            }
+
+            .user-img {
+                margin-left: 1rem !important;
+                margin-right: 1rem !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    nav {
+        justify-content: space-between;
+        padding: 1rem;
+
+        .logo-div {
+            width: auto !important;
+        }
+
+        .search-div {
+            width: auto !important;
+
+            img {
+                width: 6rem;
+            }
+        }
+
+        .nav-right {
+            width: auto !important;
+
+            .user-items {
+
+                .notifications {
+                    display: none !important;
+                }
+    
+                .user-img {
+                    margin-left: 0.5rem !important;
+                    margin-right: 0.5rem !important;
+                }
+                .username {
+                    display: none;
+                }
+            }
+        }
+    }
+}
