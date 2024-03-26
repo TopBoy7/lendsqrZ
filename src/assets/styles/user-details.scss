@@ -1,0 +1,342 @@
+@import 'mixins';
+
+div.user-details {
+    padding: 3rem 2.5rem;
+    color: $DeepBlue;
+
+    .back {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        img {
+            margin-right: 0.5rem;
+        }
+        p {
+            font-size: 0.9rem;
+        }
+    }
+
+    .head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        h2 {
+            font-weight: 500;
+            margin-right: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+
+            button {
+                background-color: #FFF;
+                border-radius: 8px;
+                transition: all 0.5s ease-out;
+                padding: 0.6rem 1rem;
+                font-weight: 600;
+                font-size: 0.9rem;
+                font-family: 'Work Sans', sans-serif;
+                cursor: pointer;
+
+                &:nth-of-type(1) {
+                    border: 1px solid $Blacklisted;
+                    color: $Blacklisted;
+                    margin-right: 1rem;
+
+                    &:hover {
+                        box-shadow: 0 0 15px $Blacklisted;
+                    }
+                }
+
+                &:nth-of-type(2) {
+                    border: 1px solid $Active;
+                    color: $Active;
+
+                    &:hover {
+                        box-shadow: 0 0 15px $Active;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .basic-info {
+        margin-top: 1.5rem;
+        box-shadow: 3px 5px 20px 0px $BoxShadow;
+
+        .info {
+            padding: 2rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+
+            .name-and-avatar {
+                display: flex;
+                align-items: center;
+                padding-right: 1.2rem;
+                border-right: 1px solid $InputBorder;
+    
+                img {
+                    border-radius: 50%;
+                    width: 5rem;
+                    height: 5rem;
+                    object-fit: cover;
+                    margin-right: 1rem;
+                }
+    
+                .name {
+                    display: flex;
+                    flex-direction: column;
+    
+                    h3 {
+                        margin: 0 0 0.5rem;
+                        font-weight: 600;
+                        font-size: 1.3rem;
+                    }
+    
+                    p {
+                        margin: 0;
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+
+            .tier {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-right: 1px solid $InputBorder;
+                padding: 1rem 1.5rem;
+
+                p {
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    margin: 0 0 0.5rem;
+                }
+
+                .stars {
+                    display: flex;
+
+                    .star {
+                        color: $Pending;
+                        width: 1rem;
+                    }
+                }
+            }
+
+            .balance {
+                padding: 1rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                h3 {
+                    font-weight: 600;
+                    font-size: 1.3rem;
+                    margin: 0 0 0.5rem;
+
+                    span {
+                        text-decoration: line-through;
+                    }
+                }
+
+                p {
+                    font-size: 0.7rem;
+                    margin: 0;
+                }
+            }
+        }
+
+        .links {
+            display: flex;
+            margin-top: 1rem;
+            width: 100%;
+            white-space: nowrap;
+            overflow-x: auto;
+            box-sizing: border-box;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .link {
+                padding: 0rem 1rem;
+                margin-left: 1rem;
+                cursor: pointer;
+                box-sizing: border-box;
+
+                p {
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                }
+            }
+
+            .active {
+                color: $Cyan;
+                border-bottom: 2px solid $Cyan;
+            }
+        }
+    }
+
+    .additional-info {
+        margin-top: 1.5rem;
+        box-shadow: 3px 5px 20px 0px $BoxShadow;
+        padding: 2rem;
+
+        section {
+            padding-bottom: 1rem;
+            padding-top: 1.5rem;
+            border-bottom: 1px solid $InputBorder;
+
+            &:nth-of-type(1) {
+                padding-top: 0;
+            }
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            h4 {
+                color: $DeepBlue;
+                margin-top: 0;
+                font-weight: 600;
+            }
+            .data-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                
+                * {
+                    color: $Inactive;
+                }
+    
+                .data {
+                    display: flex;
+                    flex-direction: column;
+                    align-content: space-between;
+                    margin: 0 1.5rem 1rem 0;
+                    flex: 0 0 auto;
+                    min-width: 20%;
+
+                    p {
+                        font-size: 0.7rem;
+                        font-weight: 500;
+                        margin-bottom: 0.6rem;
+                    }
+    
+                    h5 {
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                        margin: 0;
+                    }
+                }
+
+                &:nth-of-type(2) {
+                    .data {
+                        flex: 0 0 auto;
+                        min-width: 25%;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@media (min-width: 1280px) {
+    div.user-details {
+        .basic-info {
+            .links {
+                justify-content: space-around;
+            }
+        }
+    }
+}
+
+@media (max-width:992px) {
+    div.user-details {
+        .basic-info {
+            .info {
+                .name-and-avatar {
+                    img {
+                        width: 4rem;
+                        height: 4rem;
+                    }
+                    .name {
+                        h3 {
+                            font-size: 1rem;
+                        }
+    
+                        p {
+                            font-size: 0.7rem;
+                        }
+                    }
+                }
+
+                .tier {
+                    p {
+                        font-size: 0.7rem;
+                    }
+                }
+
+                .balance {
+                    h3 {
+                        font-size: 1rem;
+                    }
+                }
+            }
+
+            .links {
+                justify-content: space-around;
+            }
+        }
+    }
+}
+
+@media (max-width:768px) {
+    div.user-details {
+        padding: 2rem 1rem;
+        .basic-info {
+            .info {
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 1rem 1rem;
+
+                .name-and-avatar {
+                    border-right: none;
+                    border-bottom: 1px solid $InputBorder;
+                    padding-bottom: 1rem;
+                }
+
+                .tier {
+                    border-right: none;
+                    border-bottom: 1px solid $InputBorder;
+                    padding-bottom: 1rem;
+                }
+
+                .balance {
+                    text-align: center;
+                    h3 {
+                        font-size: 1rem;
+                    }
+                }
+            }
+
+            .links {
+                justify-content: initial;
+            }
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    div.user-details {
+        .head {
+            justify-content: center;
+        }
+    }
+}

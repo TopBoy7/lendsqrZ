@@ -2,8 +2,10 @@ import signIn from '../src/assets/images/sign-in.svg';
 import logo from '../src/assets/images/logo.svg';
 import '../src/assets/styles/login.scss';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+    const navigate = useNavigate();
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('')
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -44,7 +46,7 @@ function Login() {
             setError('Please enter a password up to 8 characters')
             return;
         } else {
-            window.location.href = '/dashboard';
+            navigate('/dashboard');
         }
     }
 
