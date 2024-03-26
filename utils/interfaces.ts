@@ -48,3 +48,12 @@ export interface UserObject {
     status: string;
     id: string;
 }
+
+export interface OpenFilterObject {
+    organization: boolean,
+    username: boolean,
+    email: boolean,
+    phoneNumber: boolean,
+    dateJoined: boolean,
+    status: boolean,
+}

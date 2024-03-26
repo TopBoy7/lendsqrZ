@@ -1,62 +1,115 @@
 import '../src/assets/styles/users.scss';
-import icon1 from '../src/assets/icons/icon1.svg';
-import icon2 from '../src/assets/icons/icon2.svg';
-import icon3 from '../src/assets/icons/icon3.svg';
-import icon4 from '../src/assets/icons/icon4.svg';
-import { Stat } from '../utils/interfaces';
 import UserStats from './UserStats';
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import api from '../api/api';
-import { UserObject } from '../utils/interfaces';
+import { Pagination } from '@mui/material';
+import { UserObject, OpenFilterObject, Stat } from '../utils/interfaces';
 import { useEffect, useState } from 'react';
+import FilterForm from '../components/FilterForm';
+import { scrollToTop, userStats } from '../utils/constants';
 
 function Users() {
 
-    // Users stats 
-    const userStats: Stat[] = [
-        {
-            id: 1,
-            image: icon1,
-            title: 'USERS',
-            value: '2,453'
-        },
-        {
-            id: 2,
-            image: icon2,
-            title: 'ACTIVE USERS',
-            value: '2,453'
-        },
-        {
-            id: 3,
-            image: icon3,
-            title: 'USERS WITH LOANS',
-            value: '12,453'
-        },
-        {
-            id: 4,
-            image: icon4,
-            title: 'USERS WITH SAVINGS',
-            value: '102,453'
-        },
-    ]
 
     // to store all users retrieved from api call 
     const [users, setUsers] = useState<UserObject[]>([]);
-    // to store users currently being displayed 
-    // const [usersOnPage, setUsersOnPage] = useState<UserObject[]>([]);
-    // to store number of users currently being displayed 
-    const [usersToDisplay, setUsersToDisplay] = useState<string>('25');
-    // page number for pagination 
-    const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
-    // number of pages for pagination 
-    const[numberOfPages, setNumberOfPages] = useState<number>(20);
+    // function to format date from user object 
+    const formattedDate = (dateFromData: string): string => {
+        const date = new Date(dateFromData);
+        const newFormat = date.toString()
+        return `${newFormat.slice(4, 9)}, ${newFormat.slice(10, 21)}`
+    }
+    // function to format phone number from user object
+    const formattedPhoneNumber = (phoneNumber: string): string => {
+        return `${phoneNumber.slice(0, 13)}`
+    }
+    // function to format organization name from user object
+    // this function is not necessary and is strictly for visual consistency 
+    const formattedOrgName = (orgName: string): string => {
+        return `${orgName.slice(0, 20)}`
+    }
 
-    // const showUsers = () => {
-    //     const firstIndex = (currentPageIndex - 1) * usersToDisplay;
-    //     const secondIndex = currentPageIndex * usersToDisplay;
-    //     setUsersOnPage(users.slice(firstIndex, secondIndex));
-    // }
+
+    // -------------------------------filter popup functionality----------------------------
+    // state to store if filter is open 
+    const initialState: OpenFilterObject = {
+        organization: false,
+        username: false,
+        email: false,
+        phoneNumber: false,
+        dateJoined: false,
+        status: false,
+    }
+    const [ isOpen, setIsOpen ] = useState(initialState);
+    // function to close filter popup 
+    const closePopup = (event: React.MouseEvent<HTMLButtonElement>): void => {
+        event.preventDefault();
+        setIsOpen(initialState)
+    }
+    // functions to display filters 
+    const openOrgFilter = (): void => {
+        if ( !isOpen.organization ) {
+            setIsOpen({
+                ...initialState,
+                organization: true,
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    const openUsernameFilter = (): void => {
+        if ( !isOpen.username ) {
+            setIsOpen({
+                ...initialState,
+                username: true,
+            })
+        } else {
+            setIsOpen(initialState)
+        }
+    }
+    const openEmailFilter = (): void => {
+        if ( !isOpen.email ) {
+            setIsOpen({
+                ...initialState,
+                email: true,
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    const openPhoneNumberFilter = (): void => {
+        if ( !isOpen.phoneNumber ) {
+            setIsOpen({
+                ...initialState,
+                phoneNumber: true,
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    const openDateJoinedFilter = (): void => {
+        if ( !isOpen.dateJoined ) {
+            setIsOpen({
+                ...initialState,
+                dateJoined: true,
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    const openStatusFilter = (): void => {
+        if ( !isOpen.status ) {
+            setIsOpen({
+                ...initialState,
+                status: true,
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    // --------------------------filter popup functionality ends here-----------------------
+
 
     useEffect(() => {
 
@@ -113,34 +166,39 @@ function Users() {
         
     }, []);
 
-    const firstIndex = (currentPageIndex - 1) * +usersToDisplay;
-    const secondIndex = currentPageIndex * +usersToDisplay;
 
-    const usersOnPage = users.slice(firstIndex, secondIndex);
-
-    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // ------------------------------pagination functionality here------------------------------  
+    // to store number of users currently being displayed 
+    const [usersToDisplay, setUsersToDisplay] = useState<string>('10');
+    // page number for pagination 
+    const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
+    // number of pages for pagination 
+    const[numberOfPages, setNumberOfPages] = useState<number>(50);
+    // first and second index for users array slice 
+    const firstIndex: number = (currentPageIndex - 1) * +usersToDisplay;
+    const secondIndex: number = currentPageIndex * +usersToDisplay;
+    // array of users to be displayed (as selected at the bottom) 
+    const usersOnPage: UserObject[] = users.slice(firstIndex, secondIndex);
+    // set number of users to display and update the number of pages for pagination 
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setUsersToDisplay(`${event.target.value}`);
+        // if (usersToDisplay === '10') {
+        //     setNumberOfPages(50);
+        // } else if (usersToDisplay === '25') {
+        //     setNumberOfPages(20);
+        // } else {
+        //     setNumberOfPages(10);
+        // }
+        setNumberOfPages(users.length/+event.target.value);
+        console.log( numberOfPages );
     }
-
-    // function to format date 
-    const formattedDate = (dateFromData: string) => {
-        const date = new Date(dateFromData);
-        const newFormat = date.toString()
-        return `${newFormat.slice(4, 9)}, ${newFormat.slice(10, 21)}`
+    // jump to page function for pagination component 
+    const changePage = (val: number): void => {
+        setCurrentPageIndex(val);
+        scrollToTop();
     }
+    // -----------------------------pagination functionality ends here------------------------------  
 
-    // function to format phone number 
-    const formattedPhoneNumber = (phoneNumber: string) => {
-        return `${phoneNumber.slice(0, 13)}`
-    }
-
-    // function to format organization name 
-    // this function is not necessary and is strictly for visual consistency 
-    const formattedOrgName = (orgName: string) => {
-        return `${orgName.slice(0, 20)}`
-    }
-
-    
 
     return (
 
@@ -160,38 +218,68 @@ function Users() {
                             <th>
                                 <div className="head">
                                     <h6>ORGANIZATION</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon'  onClick={openOrgFilter} />
                                 </div>
+                                { isOpen.organization? (
+                                    <div className="filter">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th>
                                 <div className="head">
                                     <h6>USERNAME</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon' onClick={openUsernameFilter} />
                                 </div>
+                                { isOpen.username? (
+                                    <div className="filter">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th>
                                 <div className="head">
                                     <h6>EMAIL</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon' onClick={openEmailFilter} />
                                 </div>
+                                { isOpen.email? (
+                                    <div className="filter">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th>
                                 <div className="head">
                                     <h6>PHONE NUMBER</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon' onClick={openPhoneNumberFilter} />
                                 </div>
+                                { isOpen.phoneNumber? (
+                                    <div className="filter">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th>
                                 <div className="head">
                                     <h6>DATE JOINED</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon' onClick={openDateJoinedFilter} />
                                 </div>
+                                { isOpen.dateJoined? (
+                                    <div className="filter">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th>
                                 <div className="head">
                                     <h6>STATUS</h6>
-                                    <FilterListOutlinedIcon className='filter' />
+                                    <FilterListOutlinedIcon className='filter-icon' onClick={openStatusFilter} />
                                 </div>
+                                { isOpen.status? (
+                                    <div className="filter last">
+                                        <FilterForm closePopup={closePopup} />
+                                    </div>
+                                ): (<div></div>)}
                             </th>
                             <th></th>
                         </tr>
@@ -216,8 +304,8 @@ function Users() {
                 </table>
             </div>
 
-            <div className="row">
-                <div className="col">
+            <div className="pagination-row">
+                <div className="pagination-col">
                     <p>Showing 
                         <select value={ usersToDisplay } onChange={ handleSelect }>
                             <option value="10">10</option>
@@ -227,7 +315,10 @@ function Users() {
                         out of { users.length }
                     </p>
                 </div>
-                <div className="col"> Pagination levels</div>
+                <div className="pagination-col">
+                    <Pagination count={numberOfPages} shape="rounded" onChange={(event, val)=> changePage(val)} />
+                    {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
+                </div>
             </div>
 
         </div>

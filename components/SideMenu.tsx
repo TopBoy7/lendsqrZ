@@ -21,9 +21,16 @@ import preference from '../src/assets/icons/preference.svg';
 import badgePercentage from '../src/assets/icons/badge-percent.svg';
 import clipboardList from '../src/assets/icons/clipboard-list.svg';
 import signOut from '../src/assets/icons/sign-out.svg';
+import { useNavigate } from 'react-router-dom';
 
 
 function SideMenu() {
+
+    const navigate = useNavigate();
+    const logOut = (): void => {
+        navigate('/login', { replace: true })
+    }
+
     return (
         <div className='aside'>
 
@@ -149,7 +156,7 @@ function SideMenu() {
                 <p className='inactive'>Audit Logs</p>
             </div>
 
-            <div className="link">
+            <div className="link" onClick={logOut} >
                 <img src={signOut} alt="signout icon" />
                 <p className="inactive">Logout</p>
             </div>

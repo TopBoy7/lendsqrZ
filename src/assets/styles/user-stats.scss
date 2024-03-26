@@ -53,3 +53,19 @@ div.column {
         }
     }
 }
+
+@media (max-width: 575px) {
+    .column {
+        .stat {
+            padding: 1rem 1.5rem !important;
+
+            p {
+                font-size: 0.7rem !important;
+            }
+
+            h3 {
+                font-size: 1.1rem !important;
+            }
+        }
+    }
+}
