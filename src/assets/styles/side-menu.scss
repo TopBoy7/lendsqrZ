@@ -44,6 +44,23 @@ div.aside {
             font-weight: 500;
             margin-right: 0rem;
         }
+
+        &:last-of-type {
+            border-top: 1px solid $InputBorder;
+            padding-top: 0.8rem;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            
+            .inactive {
+                opacity: 100%;
+            }
+        }
+    }
+
+    .version {
+        padding: 0 1.5rem;
+        font-size: 0.7rem;
+        margin: 0;
     }
 
     h4 {

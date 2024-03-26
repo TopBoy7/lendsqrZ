@@ -20,6 +20,7 @@ import chartBar from '../src/assets/icons/chart-bar.svg';
 import preference from '../src/assets/icons/preference.svg';
 import badgePercentage from '../src/assets/icons/badge-percent.svg';
 import clipboardList from '../src/assets/icons/clipboard-list.svg';
+import signOut from '../src/assets/icons/sign-out.svg';
 
 
 function SideMenu() {
@@ -147,6 +148,13 @@ function SideMenu() {
                 <img src={clipboardList} alt="clipboard list" />
                 <p className='inactive'>Audit Logs</p>
             </div>
+
+            <div className="link">
+                <img src={signOut} alt="signout icon" />
+                <p className="inactive">Logout</p>
+            </div>
+
+            <p className='version'>v1.2.0</p>
 
         </div>
     )
