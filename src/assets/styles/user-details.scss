@@ -1,5 +1,10 @@
 @import 'mixins';
 
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../fonts/FontsFree-Net-SFCompactText-Regular.ttf') format('ttf');
+}
+
 div.user-details {
     padding: 3rem 2.5rem;
     color: $DeepBlue;
@@ -159,6 +164,9 @@ div.user-details {
             white-space: nowrap;
             overflow-x: auto;
             box-sizing: border-box;
+            font-family: 'SF Compact', sans-serif;
+            color: #000;
+            opacity: 80%;
 
             &::-webkit-scrollbar {
                 display: none;
@@ -179,6 +187,7 @@ div.user-details {
             .active {
                 color: $Cyan;
                 border-bottom: 2px solid $Cyan;
+                opacity: 100%;
             }
         }
     }

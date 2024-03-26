@@ -1,9 +1,10 @@
 @import 'mixins';
 
 div.main {
+    background-color: #FBFBFB;
 
     .header {
-        position:sticky;
+        position:fixed;
         width:100%;
         z-index: 100000;
         background-color: #FFF;
@@ -13,10 +14,16 @@ div.main {
     .row {
         display: flex;
         flex-wrap: wrap;
+        padding-top: 5rem;
 
-        .side-menu {
+        .aside-wrapper {
             flex: 0 0 auto;
             width: 20%;
+            background-color: #FFF;
+        }
+
+        .side-menu {
+            background-color: #FFF;
         }
 
         .routes {
@@ -30,10 +37,20 @@ div.main {
     div.main {
         
         .row {
+            // flex-wrap: nowrap;
+
+            .aside-wrapper {
+                display: none;
+                width: 100%;
+                height: 100%;
+                background-color: #0006;
+                z-index: 11;
+            }
     
             .side-menu {
                 flex: 0 0 auto;
                 transition: all 0.5s ease-out;
+                padding-top: 6rem;
                 transform: translateX(-20rem);
                 z-index: 11;
                 // display: none;
@@ -51,6 +68,30 @@ div.main {
                 width: 50%;
                 height: 100vh;
                 z-index: 11;
+            }
+        }
+
+        .no-wrap {
+            flex-wrap: nowrap;
+    
+            .aside-wrapper {
+                display: block !important;
+                position: fixed;
+                overflow: hidden;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+
+                aside {
+                    z-index: 10000;
+                    position: relative;
+                }
+            }
+    
+            .routes {
+                position: absolute !important;
             }
         }
 

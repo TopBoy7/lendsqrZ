@@ -5,7 +5,6 @@ import UserDetails from '../components/UserDetails';
 import Navbar from '../components/Navbar';
 import SideMenu from '../components/SideMenu';
 import '../src/assets/styles/dashboard.scss';
-// import { Search, NotificationsNoneOutlined, ArrowDropDown, Menu, CloseOutlined } from '@mui/icons-material';
 
 
 function Dashboard() {
@@ -20,8 +19,11 @@ function Dashboard() {
         }
     }
 
-    const normalClass = 'side-menu'
-    const conditionalClass = navIsOpen? 'show-nav': 'none';
+    const normalAsideClass = 'side-menu'
+    const conditionalAsideClass = navIsOpen? 'show-nav': '';
+
+    const normalRowClass = 'row';
+    const conditionalRowClass = navIsOpen? 'no-wrap': '';
 
     return (
         <div className="main">
@@ -30,10 +32,12 @@ function Dashboard() {
                 <Navbar navIsOpen={navIsOpen} toggleNav={toggleNav} />
             </div>
 
-            <div className="row">
-                <aside className={`${normalClass} ${conditionalClass}`}>
-                    <SideMenu />
-                </aside>
+            <div className={`${normalRowClass} ${conditionalRowClass}`}>
+                <div className="aside-wrapper" onClick={ toggleNav } >
+                    <aside className={`${normalAsideClass} ${conditionalAsideClass}`}>
+                        <SideMenu />
+                    </aside>
+                </div>
 
                 <div className="routes">
                     <Routes>
