@@ -28,12 +28,13 @@ nav {
             display: flex;
 
             input {
-                border: 1.5px solid $DeepBlue;
+                border: 2px solid $InputBorder;
+                font-family: 'Work Sans', sans-serif;
                 border-radius: 8px;
-                opacity: 20%;
+                opacity: 70%;
                 color: $Inactive;
                 padding: 0.7rem 3.2rem 0.7rem 1.2rem;
-                width: 50%;
+                width: 60%;
                 font-weight: 500;
             }
 

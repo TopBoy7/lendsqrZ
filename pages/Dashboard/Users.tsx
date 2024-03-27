@@ -1,19 +1,19 @@
 import '../src/assets/styles/users.scss';
-import UserStats from './UserStats';
+import UserStats from '../../components/UserStats';
 import {
     FilterListOutlined as FilterListOutlinedIcon,
     MoreVertOutlined as MoreVertOutlinedIcon,
 } from '@mui/icons-material';
-import api from '../api/api';
+import api from '../../api/api';
 import { Pagination } from '@mui/material';
-import { UserObject, OpenFilterObject, Stat } from '../utils/interfaces';
+import { UserObject, OpenFilterObject, Stat } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
-import FilterForm from '../components/FilterForm';
-import { userStats, tableHeaders } from '../utils/constants';
+import FilterForm from '../../components/FilterForm';
+import { userStats, tableHeaders } from '../../utils/constants';
 import view from '../src/assets/icons/view.png';
 import blacklist from '../src/assets/icons/blacklist.png';
 import activate from '../src/assets/icons/activate.png';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 function Users() {
 
@@ -116,26 +116,48 @@ function Users() {
     }, []);
 
 
-    // ------------------------------pagination functionality here------------------------------  
-    // state to store number of users currently being displayed 
-    const [usersToDisplay, setUsersToDisplay] = useState<string>('10');
+    // ------------------------------pagination functionality here------------------------------ 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const displayed = queryParams.get('usersDisplayed');
+    const pageNo = queryParams.get('page');
+    // state to store number of users currently being displayed
+    // if there is a query parameter, the default should be set to that on page load 
+    const defaultToDisplay = displayed? displayed : '10'
+    const [usersToDisplay, setUsersToDisplay] = useState<string>(defaultToDisplay);
     // state to store page number for pagination 
-    const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
+    // if there is a query parameter, the default should be set to that on page load 
+    const defaultIndex = pageNo? +pageNo : 1
+    const [currentPageIndex, setCurrentPageIndex] = useState<number>(defaultIndex);
     // number of pages for pagination 
-    const[numberOfPages, setNumberOfPages] = useState<number>(50);
+    const pagesNumber = displayed? 500 / +displayed : 50;
+    const[numberOfPages, setNumberOfPages] = useState<number>(pagesNumber);
+    console.log(numberOfPages);
+    
     // first and second index for users array slice 
     const firstIndex: number = (currentPageIndex - 1) * +usersToDisplay;
     const secondIndex: number = currentPageIndex * +usersToDisplay;
     // array of users to be displayed (as selected at the bottom) 
     const usersOnPage: UserObject[] = users.slice(firstIndex, secondIndex);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    // Create a new URLSearchParams object from the current search parameters
+    const params = new URLSearchParams(searchParams.toString());
     // set number of users to display and update the number of pages for pagination 
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setUsersToDisplay(`${event.target.value}`);
         setNumberOfPages(users.length/+event.target.value);
+        params.set('usersDisplayed', `${event.target.value}`)
+        // reset page index after number of displayed users is changed 
+        setCurrentPageIndex(1);
+        params.set('page', '1');
+        setSearchParams(params);
     }
     // jump to page function for pagination component 
     const changePage = (val: number): void => {
         setCurrentPageIndex(val);
+        params.set('page', `${val}`)
+        setSearchParams(params);
         // scrollToTop();
     }
     // -----------------------------pagination functionality ends here------------------------------ 
@@ -154,7 +176,7 @@ function Users() {
         }
     }
     const viewUser = (user: UserObject): void => {
-        navigate(`users/${user.id}`);
+        navigate(`${user.id}`);
     }
     // -------------------------------user options functionality ends here-----------------------------
 
@@ -239,7 +261,7 @@ function Users() {
                     </p>
                 </div>
                 <div className="pagination-col">
-                    <Pagination count={numberOfPages} shape="rounded" onChange={(event, val)=> changePage(val)} />
+                    <Pagination count={numberOfPages} shape="rounded" page={defaultIndex} onChange={(event, val)=> changePage(val)} />
                     {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
                 </div>
             </div>

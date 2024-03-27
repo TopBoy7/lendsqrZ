@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import Users from '../components/Users';
-import UserDetails from '../components/UserDetails';
+import Users from './Dashboard/Users';
+import UserDetails from './Dashboard/UserDetails';
 import Navbar from '../components/Navbar';
 import SideMenu from '../components/SideMenu';
 import '../src/assets/styles/dashboard.scss';
@@ -41,7 +41,7 @@ function Dashboard() {
 
                 <div className="routes">
                     <Routes>
-                        <Route path="/" element={<Users />}  />
+                        <Route path="/users" element={<Users />}  />
                         <Route path="/users/:id" element={<UserDetails />}  />
                     </Routes>
                 </div>

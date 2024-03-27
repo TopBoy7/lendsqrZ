@@ -1,9 +1,9 @@
-import '../src/assets/styles/user-details.scss';
-import back from '../src/assets/icons/back.svg';
+import '../../src/assets/styles/user-details.scss';
+import back from '../../src/assets/icons/back.svg';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { UserObject } from '../utils/interfaces';
-import api from '../api/api';
+import { UserObject } from '../../utils/interfaces';
+import api from '../../api/api';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined';
 
@@ -74,14 +74,14 @@ function UserDetails() {
 
     const navigate = useNavigate();
 
-    const goToDashboard = () => {
-        navigate('/dashboard', { replace: true })
+    const goBack = () => {
+        navigate(-1)
     }
 
     return (
         <div className='user-details'>
 
-            <div className="back" onClick={ goToDashboard }>
+            <div className="back" onClick={ goBack }>
                 <img src={back} alt="previous page icon" />
                 <p>Back to Users</p>
             </div>
