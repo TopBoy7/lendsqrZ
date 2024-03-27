@@ -38,3 +38,5 @@ export const userStats: Stat[] = [
         value: '102,453'
     },
 ]
+
+export const tableHeaders = [ 'organization', 'username', 'email', 'phone number', 'date joined', 'status' ]

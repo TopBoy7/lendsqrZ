@@ -63,11 +63,11 @@ function Login() {
                     <h1>Welcome!</h1>
                     <p>Enter details to login.</p>
 
-                    {showError? (
+                    {showError && (
                         <div className="error">
                             <p>{ error }</p>
                         </div>
-                    ): (<span></span>)}
+                    )}
                     <form action="/">
                         <input type="text" placeholder='Email' value={email} onChange={handleEmailChange} />
                         <div className="password">

@@ -71,7 +71,6 @@ function UserDetails() {
     const foundUser = users.find((user: UserObject) => {
         return user.id === id;
     })
-    console.log(foundUser);
 
     const navigate = useNavigate();
 

@@ -54,6 +54,7 @@ div.users {
                             h6 {
                                 padding-right: 0.5rem;
                                 margin: 0;
+                                text-transform: uppercase;
                             }
 
                             .filter-icon {
@@ -169,8 +170,10 @@ div.users {
                             }
                         }
 
-                        .last {
-                            left: -7rem;
+                        &:nth-of-type(6) {
+                            .filter {
+                                left: -7rem;
+                            }
                         }
                     }
                 }
@@ -182,6 +185,7 @@ div.users {
 
                 tr {
                     border-bottom: 1px solid $InputBorder;
+                    position: relative;
 
                     &:last-of-type {
                         border-bottom: none;
@@ -243,6 +247,37 @@ div.users {
                             cursor: pointer;
                         }
                     }
+
+                    .user-options {
+                        width: 10rem;
+                        margin: 0;
+                        padding: 0.5rem 1rem;
+                        position: absolute;
+                        z-index: 2;
+                        top: 3rem;
+                        right: 0;
+                        background: #FFFFFF;
+                        border: 1px solid rgba(84,95,125,.14);
+                        box-shadow: 3px 5px 20px #0000001a;
+                        border-radius: 4px;
+
+                        .option {
+                            display: flex;
+                            align-items: center;
+                            cursor: pointer;
+
+                            img {
+                                margin-right: 0.5rem;
+                                width: 1rem;
+                                height: 1rem;
+                            }
+
+                            p {
+                                font-weight: 600;
+                                font-size: 0.8rem;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -272,15 +307,22 @@ div.users {
                     * {
                         color: $Inactive;
                         font-size: 0.8rem;
+                        font-weight: 600;
                         font-family: 'Work Sans', sans-serif;
                     }
 
                     ul {
                         li {
+                            .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root {
+                                opacity: 60%;
+                            }
+                            // opacity: 60%;
                             &:nth-of-type(1) {
                                 color: $DeepBlue;
                                 border-radius: 4px;
+                                opacity: 100% !important;
                                 background-color: #545f7d0f;
+                                opacity: 100%;
                                 button {
                                     svg {
                                         scale: 1.7;
@@ -289,6 +331,7 @@ div.users {
                             }
                             &:last-of-type {
                                 color: $DeepBlue;
+                                opacity: 100% !important;
                                 border-radius: 4px;
                                 background-color: #545f7d0f;
                                 button {
@@ -299,7 +342,8 @@ div.users {
                             }
 
                             .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
-                                // background-color: transparent;
+                                background-color: transparent;
+                                opacity: 100% !important;
                                 color: $DeepBlue;
                             }
                         }
@@ -359,5 +403,14 @@ div.users {
                 }
             }
         }
+    }
+}
+
+@media (min-width: 1367px) {
+    thead {
+        font-size: 1.2rem !important;
+    }
+    tbody {
+        font-size: 0.9rem !important;
     }
 }

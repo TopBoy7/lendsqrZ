@@ -1,13 +1,19 @@
 import '../src/assets/styles/users.scss';
 import UserStats from './UserStats';
-import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import {
+    FilterListOutlined as FilterListOutlinedIcon,
+    MoreVertOutlined as MoreVertOutlinedIcon,
+} from '@mui/icons-material';
 import api from '../api/api';
 import { Pagination } from '@mui/material';
 import { UserObject, OpenFilterObject, Stat } from '../utils/interfaces';
 import { useEffect, useState } from 'react';
 import FilterForm from '../components/FilterForm';
-import { scrollToTop, userStats } from '../utils/constants';
+import { userStats, tableHeaders } from '../utils/constants';
+import view from '../src/assets/icons/view.png';
+import blacklist from '../src/assets/icons/blacklist.png';
+import activate from '../src/assets/icons/activate.png';
+import { useNavigate } from 'react-router-dom';
 
 function Users() {
 
@@ -47,62 +53,12 @@ function Users() {
         event.preventDefault();
         setIsOpen(initialState)
     }
-    // functions to display filters 
-    const openOrgFilter = (): void => {
-        if ( !isOpen.organization ) {
+    // function to display filters 
+    const openFilter = (column: string): void => {
+        if (!isOpen[column]) {
             setIsOpen({
                 ...initialState,
-                organization: true,
-            })
-        } else {
-            setIsOpen(initialState);
-        }
-    }
-    const openUsernameFilter = (): void => {
-        if ( !isOpen.username ) {
-            setIsOpen({
-                ...initialState,
-                username: true,
-            })
-        } else {
-            setIsOpen(initialState)
-        }
-    }
-    const openEmailFilter = (): void => {
-        if ( !isOpen.email ) {
-            setIsOpen({
-                ...initialState,
-                email: true,
-            })
-        } else {
-            setIsOpen(initialState);
-        }
-    }
-    const openPhoneNumberFilter = (): void => {
-        if ( !isOpen.phoneNumber ) {
-            setIsOpen({
-                ...initialState,
-                phoneNumber: true,
-            })
-        } else {
-            setIsOpen(initialState);
-        }
-    }
-    const openDateJoinedFilter = (): void => {
-        if ( !isOpen.dateJoined ) {
-            setIsOpen({
-                ...initialState,
-                dateJoined: true,
-            })
-        } else {
-            setIsOpen(initialState);
-        }
-    }
-    const openStatusFilter = (): void => {
-        if ( !isOpen.status ) {
-            setIsOpen({
-                ...initialState,
-                status: true,
+                [column]: true
             })
         } else {
             setIsOpen(initialState);
@@ -115,9 +71,7 @@ function Users() {
 
         // check local storage for users array and use it available 
         if (localStorage.getItem('users')) {
-
             const data = JSON.parse(localStorage.getItem('users')!);
-
             // mockapi.io allows only 100 mock responses for each endpoint 
             // that is why I repeated the same 100 responses 5 times 
             setUsers([
@@ -126,10 +80,8 @@ function Users() {
                 ...data,
                 ...data,
                 ...data,
-            ]);
-            
+            ]); 
             return;
-
         } else {
             // if nothing in local Storage, get user data through api call 
             const getUsers = async () => {
@@ -146,7 +98,6 @@ function Users() {
                             res.data[i].status = 'Pending'
                         }
                     }
-
                     localStorage.setItem('users', JSON.stringify(res.data))
                     setUsers([
                         ...res.data,
@@ -159,18 +110,16 @@ function Users() {
                     console.log(error);
                 }
             }
-
             getUsers();
-            
         }
         
     }, []);
 
 
     // ------------------------------pagination functionality here------------------------------  
-    // to store number of users currently being displayed 
+    // state to store number of users currently being displayed 
     const [usersToDisplay, setUsersToDisplay] = useState<string>('10');
-    // page number for pagination 
+    // state to store page number for pagination 
     const [currentPageIndex, setCurrentPageIndex] = useState<number>(1);
     // number of pages for pagination 
     const[numberOfPages, setNumberOfPages] = useState<number>(50);
@@ -182,22 +131,32 @@ function Users() {
     // set number of users to display and update the number of pages for pagination 
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setUsersToDisplay(`${event.target.value}`);
-        // if (usersToDisplay === '10') {
-        //     setNumberOfPages(50);
-        // } else if (usersToDisplay === '25') {
-        //     setNumberOfPages(20);
-        // } else {
-        //     setNumberOfPages(10);
-        // }
         setNumberOfPages(users.length/+event.target.value);
-        console.log( numberOfPages );
     }
     // jump to page function for pagination component 
     const changePage = (val: number): void => {
         setCurrentPageIndex(val);
-        scrollToTop();
+        // scrollToTop();
     }
-    // -----------------------------pagination functionality ends here------------------------------  
+    // -----------------------------pagination functionality ends here------------------------------ 
+    
+
+    // -------------------------------user options functionality here-------------------------------------
+    const navigate = useNavigate();
+    const [showOptions, setShowOptions] = useState<number>(0)
+    // i used index instead of ID here because some IDs are repeated 
+    // (as I stated above, I had to spread the same response 5 times because there are only a hundred responses )
+    const toggleUserOptions = (index: number): void => {
+        if (index === showOptions) {
+            setShowOptions(0);
+        } else {
+            setShowOptions(index)
+        }
+    }
+    const viewUser = (user: UserObject): void => {
+        navigate(`users/${user.id}`);
+    }
+    // -------------------------------user options functionality ends here-----------------------------
 
 
     return (
@@ -215,72 +174,19 @@ function Users() {
                 <table>
                     <thead>
                         <tr>
-                            <th>
-                                <div className="head">
-                                    <h6>ORGANIZATION</h6>
-                                    <FilterListOutlinedIcon className='filter-icon'  onClick={openOrgFilter} />
-                                </div>
-                                { isOpen.organization? (
-                                    <div className="filter">
-                                        <FilterForm closePopup={closePopup} />
+                            {tableHeaders.map((header, index) => (
+                                <th key={index}>
+                                    <div className="head">
+                                        <h6>{header}</h6>
+                                        <FilterListOutlinedIcon className='filter-icon'  onClick={() => openFilter(header)} />
                                     </div>
-                                ): (<div></div>)}
-                            </th>
-                            <th>
-                                <div className="head">
-                                    <h6>USERNAME</h6>
-                                    <FilterListOutlinedIcon className='filter-icon' onClick={openUsernameFilter} />
-                                </div>
-                                { isOpen.username? (
-                                    <div className="filter">
-                                        <FilterForm closePopup={closePopup} />
-                                    </div>
-                                ): (<div></div>)}
-                            </th>
-                            <th>
-                                <div className="head">
-                                    <h6>EMAIL</h6>
-                                    <FilterListOutlinedIcon className='filter-icon' onClick={openEmailFilter} />
-                                </div>
-                                { isOpen.email? (
-                                    <div className="filter">
-                                        <FilterForm closePopup={closePopup} />
-                                    </div>
-                                ): (<div></div>)}
-                            </th>
-                            <th>
-                                <div className="head">
-                                    <h6>PHONE NUMBER</h6>
-                                    <FilterListOutlinedIcon className='filter-icon' onClick={openPhoneNumberFilter} />
-                                </div>
-                                { isOpen.phoneNumber? (
-                                    <div className="filter">
-                                        <FilterForm closePopup={closePopup} />
-                                    </div>
-                                ): (<div></div>)}
-                            </th>
-                            <th>
-                                <div className="head">
-                                    <h6>DATE JOINED</h6>
-                                    <FilterListOutlinedIcon className='filter-icon' onClick={openDateJoinedFilter} />
-                                </div>
-                                { isOpen.dateJoined? (
-                                    <div className="filter">
-                                        <FilterForm closePopup={closePopup} />
-                                    </div>
-                                ): (<div></div>)}
-                            </th>
-                            <th>
-                                <div className="head">
-                                    <h6>STATUS</h6>
-                                    <FilterListOutlinedIcon className='filter-icon' onClick={openStatusFilter} />
-                                </div>
-                                { isOpen.status? (
-                                    <div className="filter last">
-                                        <FilterForm closePopup={closePopup} />
-                                    </div>
-                                ): (<div></div>)}
-                            </th>
+                                    { isOpen[header] && (
+                                        <div className="filter">
+                                            <FilterForm closePopup={closePopup} />
+                                        </div>
+                                    )}
+                                </th>
+                            ))}
                             <th></th>
                         </tr>
                     </thead>
@@ -297,7 +203,24 @@ function Users() {
                                         <p>{ user.status }</p>
                                     </div>
                                 </td>
-                                <td><MoreVertOutlinedIcon className='options' /></td>
+                                <td><MoreVertOutlinedIcon className='options' onClick={() => toggleUserOptions(index + 1)} /></td>
+                                {/* default is 0 and when it is not 0, the options for the user at that index should show  */}
+                                { (showOptions === index + 1) && (
+                                    <td className="user-options">
+                                        <div className="option" onClick={() => viewUser(user)}>
+                                            <img src={view} alt="view details icon" />
+                                            <p>View Details</p>
+                                        </div>
+                                        <div className="option">
+                                            <img src={blacklist} alt="blacklist user icon" />
+                                            <p>Blacklist User</p>
+                                        </div>
+                                        <div className="option">
+                                            <img src={activate} alt="activate user icon" />
+                                            <p>Activate User</p>
+                                        </div>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>

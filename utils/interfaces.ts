@@ -50,6 +50,7 @@ export interface UserObject {
 }
 
 export interface OpenFilterObject {
+    [x: string]: boolean;
     organization: boolean,
     username: boolean,
     email: boolean,
