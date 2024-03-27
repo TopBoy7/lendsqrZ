@@ -1,4 +1,4 @@
-import '../src/assets/styles/users.scss';
+import '../../src/assets/styles/users.scss';
 import UserStats from '../../components/UserStats';
 import {
     FilterListOutlined as FilterListOutlinedIcon,
@@ -10,9 +10,9 @@ import { UserObject, OpenFilterObject, Stat } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import FilterForm from '../../components/FilterForm';
 import { userStats, tableHeaders } from '../../utils/constants';
-import view from '../src/assets/icons/view.png';
-import blacklist from '../src/assets/icons/blacklist.png';
-import activate from '../src/assets/icons/activate.png';
+import view from '../../src/assets/icons/view.png';
+import blacklist from '../../src/assets/icons/blacklist.png';
+import activate from '../../src/assets/icons/activate.png';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 function Users() {

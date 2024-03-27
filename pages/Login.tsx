@@ -46,7 +46,7 @@ function Login() {
             setError('Please enter a password up to 8 characters')
             return;
         } else {
-            navigate('/dashboard');
+            navigate('/dashboard/users');
         }
     }
 

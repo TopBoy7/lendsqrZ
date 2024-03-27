@@ -180,7 +180,7 @@ div.users {
             }
 
             tbody {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 font-weight: 500;
 
                 tr {
@@ -268,12 +268,10 @@ div.users {
 
                             img {
                                 margin-right: 0.5rem;
-                                width: 1rem;
-                                height: 1rem;
                             }
 
                             p {
-                                font-weight: 600;
+                                font-weight: 500;
                                 font-size: 0.8rem;
                             }
                         }
@@ -411,6 +409,6 @@ div.users {
         font-size: 1.2rem !important;
     }
     tbody {
-        font-size: 0.9rem !important;
+        font-size: 0.95rem !important;
     }
 }
