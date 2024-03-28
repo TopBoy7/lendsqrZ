@@ -120,10 +120,11 @@ function Users() {
         setSearchParams(params);
     }
     // jump to page function for pagination component 
-    const changePage = (val: number): void => {
+    const changePage = (event: React.ChangeEvent<unknown>,val: number): void => {
         setCurrentPageIndex(val);
         params.set('page', `${val}`)
         setSearchParams(params);
+        event.preventDefault();
         // scrollToTop();
     }
     // -----------------------------pagination functionality ends here------------------------------ 
@@ -311,7 +312,7 @@ function Users() {
                     </p>
                 </div>
                 <div className="pagination-col">
-                    <Pagination count={numberOfPages} shape="rounded" page={defaultIndex} onChange={(event, val)=> changePage(val)} />
+                    <Pagination count={numberOfPages} shape="rounded" page={defaultIndex} onChange={(event, val)=> changePage(event, val)} />
                     {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
                 </div>
             </div>
