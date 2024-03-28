@@ -70,7 +70,7 @@ export interface FilterFormObject {
 
 export interface FilterPropObject {
     resetFilter: (event: React.MouseEvent<HTMLButtonElement>) => void,
-    filter: (event: React.MouseEvent<HTMLButtonElement>, formEntries: FilterFormObject) => void,
+    filter: (event: React.FormEvent<HTMLFormElement>) => void,
     handleSelect: (event:React.ChangeEvent<HTMLSelectElement>, input: string) => void,
     handleChange: (event:React.ChangeEvent<HTMLInputElement>, input: string) => void,
     formEntries: FilterFormObject,

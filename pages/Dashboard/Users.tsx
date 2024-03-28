@@ -6,10 +6,10 @@ import {
 } from '@mui/icons-material';
 import api from '../../api/api';
 import { Pagination } from '@mui/material';
-import { UserObject, OpenFilterObject, Stat, FilterFormObject } from '../../utils/interfaces';
+import { UserObject, Stat, FilterFormObject } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import FilterForm from '../../components/FilterForm';
-import { userStats, tableHeaders, emptyForm } from '../../utils/constants';
+import { userStats, tableHeaders, emptyForm, initialFilterPopupState as initialState } from '../../utils/constants';
 import view from '../../src/assets/icons/view.png';
 import blacklist from '../../src/assets/icons/blacklist.png';
 import activate from '../../src/assets/icons/activate.png';
@@ -130,30 +130,21 @@ function Users() {
 
 
     // -------------------------------filter popup functionality----------------------------
-    // state to store if filter is open 
-    const initialState: OpenFilterObject = {
-        organization: false,
-        username: false,
-        email: false,
-        phoneNumber: false,
-        dateJoined: false,
-        status: false,
-    }
     const [ isOpen, setIsOpen ] = useState(initialState);
     const [formEntries, setFormEntries] = useState<FilterFormObject>(emptyForm);
 
     const handleFilterSelect = (event:React.ChangeEvent<HTMLSelectElement>, input: string): void => {
-        setFormEntries({
-            ...emptyForm,
+        setFormEntries((prevValue) => ({
+            ...prevValue,
             [input]: `${event.target.value}`
-        })
+        }))
     }
 
     const handleFilterChange = (event:React.ChangeEvent<HTMLInputElement>, input: string): void => {
-        setFormEntries({
-            ...emptyForm,
+        setFormEntries((prevValue) => ({
+            ...prevValue,
             [input]: `${event.target.value}`
-        })
+        }))
     }
 
     const openFilter = (column: string): void => {
@@ -166,25 +157,25 @@ function Users() {
             setIsOpen(initialState);
         }
     }
-    const filter = (event: React.MouseEvent<HTMLButtonElement>, formEntries: FilterFormObject): void => {
+    const filter = (event: React.FormEvent<HTMLFormElement>): void => {
         const filteredList = users.filter((user) => {
-            const validUsers = (user.orgName.includes(formEntries.organization))
+            const validUsers = (user.orgName.includes(formEntries.organization? formEntries.organization : users[0].orgName)) ||
+                            (user.userName.includes(formEntries.username)) ||
+                            (user.email.includes(formEntries.email)) ||
+                            (user.phoneNumber.includes(formEntries.phoneNumber)) ||
+                            (user.createdAt.includes(formEntries.date)) ||
+                            (user.status.includes(formEntries.status? formEntries.status : 'Any'))
             return validUsers
         })
         setUsers(filteredList);
         setCurrentPageIndex(1);
         setUsersToDisplay('10');
-        if (searchParams.has('page')) {
-            searchParams.delete('page');
-            setSearchParams(searchParams);
-        }
-        if (searchParams.has('usersDisplayed')) {
-            searchParams.delete('usersDisplayed');
-            setSearchParams(searchParams);
-        }
-        if (formEntries.organization) {
-            setNumberOfPages(1);
-        }
+        searchParams.delete('page');
+        setSearchParams(searchParams);
+        searchParams.delete('usersDisplayed');
+        setSearchParams(searchParams);
+        const newNumberOfPages = Math.ceil(filteredList.length / 10); // Calculate the new number of pages based on the filtered list
+        setNumberOfPages(newNumberOfPages);
         
         event.preventDefault()
         setIsOpen(initialState)

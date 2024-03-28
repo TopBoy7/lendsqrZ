@@ -2,7 +2,7 @@ import icon1 from '../src/assets/icons/icon1.svg';
 import icon2 from '../src/assets/icons/icon2.svg';
 import icon3 from '../src/assets/icons/icon3.svg';
 import icon4 from '../src/assets/icons/icon4.svg';
-import { Stat } from '../utils/interfaces';
+import { FilterFormObject, OpenFilterObject, Stat } from '../utils/interfaces';
 
 export const scrollToTop = (): void => {
     window.scrollTo({
@@ -41,11 +41,20 @@ export const userStats: Stat[] = [
 
 export const tableHeaders = [ 'organization', 'username', 'email', 'phone number', 'date joined', 'status' ]
 
-export const emptyForm = {
+export const emptyForm: FilterFormObject = {
     organization: '',
     username: '',
     email: '',
     date: '',
     phoneNumber: '',
     status: ''
+}
+
+export const initialFilterPopupState: OpenFilterObject = {
+    organization: false,
+    username: false,
+    email: false,
+    phoneNumber: false,
+    dateJoined: false,
+    status: false,
 }
