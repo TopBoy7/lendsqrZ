@@ -7,8 +7,9 @@ import {
 import api from '../../api/api';
 import { Pagination } from '@mui/material';
 import { UserObject, Stat, FilterFormObject } from '../../utils/interfaces';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import FilterForm from '../../components/FilterForm';
+import Loader from '../../components/Loader';
 import { userStats, tableHeaders, emptyForm, initialFilterPopupState as initialState } from '../../utils/constants';
 import view from '../../src/assets/icons/view.png';
 import blacklist from '../../src/assets/icons/blacklist.png';
@@ -20,6 +21,7 @@ function Users() {
 
     // to store all users retrieved from api call 
     const [users, setUsers] = useState<UserObject[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     // function to format date from user object 
     const formattedDate = (dateFromData: string): string => {
         const date = new Date(dateFromData);
@@ -55,6 +57,7 @@ function Users() {
             // if nothing in local Storage, get user data through api call 
             const getUsers = async () => {
                 try {
+                    setIsLoading(true);
                     const res = await api.get('users');
                     for (let i = 0; i < res.data.length; i++) {
                         if (i % 2 === 0 || i % 3 === 0 ) {
@@ -76,7 +79,9 @@ function Users() {
                         ...res.data,
                     ]);
                 } catch (error) {
-                    console.log(error);
+                    alert(error);
+                } finally {
+                    setIsLoading(false);
                 }
             }
             getUsers();
@@ -226,99 +231,114 @@ function Users() {
 
 
     return (
+        <Fragment>
+            
+            <div className="users">
+                <h2>Users</h2>
 
-        <div className="users">
-            <h2>Users</h2>
+                {isLoading && (
+                    <div className="loading">
+                        <Loader />
+                    </div>
+                )}
 
-            <div className="user-stats">
-                {userStats.map((stat: Stat, index) => (
-                    <UserStats stat={stat} key={index} />
-                ))}
-            </div>
-
-            <div className="user-info">
-                <table>
-                    <thead>
-                        <tr>
-                            {tableHeaders.map((header, index) => (
-                                <th key={index}>
-                                    <div className="head">
-                                        <h6>{header}</h6>
-                                        <FilterListOutlinedIcon className='filter-icon'  onClick={() => openFilter(header)} />
-                                    </div>
-                                    { isOpen[header] && (
-                                        <div className="filter">
-                                            <FilterForm 
-                                                users={users} 
-                                                filter={filter} 
-                                                resetFilter={resetFilter} 
-                                                formEntries={formEntries}
-                                                handleChange={handleFilterChange}
-                                                handleSelect={handleFilterSelect}
-                                            />
-                                        </div>
-                                    )}
-                                </th>
+                {!isLoading && (
+                    <div>
+                        <div className="user-stats">
+                            {userStats.map((stat: Stat, index) => (
+                                <UserStats stat={stat} key={index} />
                             ))}
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {usersOnPage.map((user, index) => (
-                            <tr key={index}>
-                                <td>{ formattedOrgName(user.orgName) }</td>
-                                <td>{ user.userName }</td>
-                                <td>{ user.email }</td>
-                                <td>{ formattedPhoneNumber(user.phoneNumber) }</td>
-                                <td>{ formattedDate(user.createdAt) }</td>
-                                <td>
-                                    <div className={user.status}>
-                                        <p>{ user.status }</p>
-                                    </div>
-                                </td>
-                                <td><MoreVertOutlinedIcon className='options' onClick={() => toggleUserOptions(index + 1)} /></td>
-                                {/* default is 0 and when it is not 0, the options for the user at that index should show  */}
-                                { (showOptions === index + 1) && (
-                                    <td className="user-options">
-                                        <div className="option" onClick={() => viewUser(user)}>
-                                            <img src={view} alt="view details icon" />
-                                            <p>View Details</p>
-                                        </div>
-                                        <div className="option" onClick={() => blacklistUser(user)} >
-                                            <img src={blacklist} alt="blacklist user icon"/>
-                                            <p>Blacklist User</p>
-                                        </div>
-                                        <div className="option" onClick={() => activateUser(user)} >
-                                            <img src={activate} alt="activate user icon" />
-                                            <p>Activate User</p>
-                                        </div>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </div>
+
+                        <div className="user-info">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        {tableHeaders.map((header, index) => (
+                                            <th key={index}>
+                                                <div className="head">
+                                                    <h6>{header}</h6>
+                                                    <FilterListOutlinedIcon className='filter-icon'  onClick={() => openFilter(header)} />
+                                                </div>
+                                                { isOpen[header] && (
+                                                    <div className="filter">
+                                                        <FilterForm 
+                                                            users={users} 
+                                                            filter={filter} 
+                                                            resetFilter={resetFilter} 
+                                                            formEntries={formEntries}
+                                                            handleChange={handleFilterChange}
+                                                            handleSelect={handleFilterSelect}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </th>
+                                        ))}
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {usersOnPage.map((user, index) => (
+                                        <tr key={index}>
+                                            <td>{ formattedOrgName(user.orgName) }</td>
+                                            <td>{ user.userName }</td>
+                                            <td>{ user.email }</td>
+                                            <td>{ formattedPhoneNumber(user.phoneNumber) }</td>
+                                            <td>{ formattedDate(user.createdAt) }</td>
+                                            <td>
+                                                <div className={user.status}>
+                                                    <p>{ user.status }</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <MoreVertOutlinedIcon className='options' onClick={() => toggleUserOptions(index + 1)} />
+                                                
+                                            {/* default is 0 and when it is not 0, the options for the user at that index should show  */}
+                                            { (showOptions === index + 1) && (
+                                                <div className="user-options">
+                                                    <div className="option" onClick={() => viewUser(user)}>
+                                                        <img src={view} alt="view details icon" />
+                                                        <p>View Details</p>
+                                                    </div>
+                                                    <div className="option" onClick={() => blacklistUser(user)} >
+                                                        <img src={blacklist} alt="blacklist user icon"/>
+                                                        <p>Blacklist User</p>
+                                                    </div>
+                                                    <div className="option" onClick={() => activateUser(user)} >
+                                                        <img src={activate} alt="activate user icon" />
+                                                        <p>Activate User</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="pagination-row">
+                            <div className="pagination-col">
+                                <p>Showing 
+                                    <select value={ usersToDisplay } onChange={ handleSelect }>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                    out of { users.length }
+                                </p>
+                            </div>
+                            <div className="pagination-col">
+                                <Pagination count={numberOfPages} shape="rounded" page={defaultIndex} onChange={(event, val)=> changePage(event, val)} />
+                                {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
+                            </div>
+                        </div>
+
+                    </div>
+                )}
             </div>
-
-            <div className="pagination-row">
-                <div className="pagination-col">
-                    <p>Showing 
-                        <select value={ usersToDisplay } onChange={ handleSelect }>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select>
-                        out of { users.length }
-                    </p>
-                </div>
-                <div className="pagination-col">
-                    <Pagination count={numberOfPages} shape="rounded" page={defaultIndex} onChange={(event, val)=> changePage(event, val)} />
-                    {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
-                </div>
-            </div>
-
-        </div>
-
+            
+        </Fragment>
     )
 }
 

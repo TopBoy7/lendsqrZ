@@ -13,6 +13,13 @@ div.users {
         flex-wrap: wrap;
     }
 
+    .loading {
+        margin-top: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .user-info {
         background: #FFFFFF;
         border: 1px solid $LightBorder;

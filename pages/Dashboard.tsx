@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import Users from './Dashboard/Users';
 import UserDetails from './Dashboard/UserDetails';
 import Navbar from '../components/Navbar';
@@ -26,28 +26,31 @@ function Dashboard() {
     const conditionalRowClass = navIsOpen? 'no-wrap': '';
 
     return (
-        <div className="main">
+        <Fragment>
+            <div className="main">
 
-            <div className="header">
-                <Navbar navIsOpen={navIsOpen} toggleNav={toggleNav} />
-            </div>
-
-            <div className={`${normalRowClass} ${conditionalRowClass}`}>
-                <div className="aside-wrapper" onClick={ toggleNav } >
-                    <aside className={`${normalAsideClass} ${conditionalAsideClass}`}>
-                        <SideMenu />
-                    </aside>
+                <div className="header">
+                    <Navbar navIsOpen={navIsOpen} toggleNav={toggleNav} />
                 </div>
 
-                <div className="routes">
-                    <Routes>
-                        <Route path="/users" element={<Users />}  />
-                        <Route path="/users/:id" element={<UserDetails />}  />
-                    </Routes>
+                <div className={`${normalRowClass} ${conditionalRowClass}`}>
+                    <div className="aside-wrapper" onClick={ toggleNav } >
+                        <aside className={`${normalAsideClass} ${conditionalAsideClass}`}>
+                            <SideMenu />
+                        </aside>
+                    </div>
+
+                    <div className="routes">
+                        <Routes>
+                            <Route path="/users" element={<Users />}  />
+                            <Route path="/users/:id" element={<UserDetails />}  />
+                        </Routes>
+                    </div>
                 </div>
+
             </div>
 
-        </div>
+        </Fragment>
     )
 }
 
