@@ -40,3 +40,12 @@ export const userStats: Stat[] = [
 ]
 
 export const tableHeaders = [ 'organization', 'username', 'email', 'phone number', 'date joined', 'status' ]
+
+export const emptyForm = {
+    organization: '',
+    username: '',
+    email: '',
+    date: '',
+    phoneNumber: '',
+    status: ''
+}

@@ -6,10 +6,10 @@ import {
 } from '@mui/icons-material';
 import api from '../../api/api';
 import { Pagination } from '@mui/material';
-import { UserObject, OpenFilterObject, Stat } from '../../utils/interfaces';
+import { UserObject, OpenFilterObject, Stat, FilterFormObject } from '../../utils/interfaces';
 import { useEffect, useState } from 'react';
 import FilterForm from '../../components/FilterForm';
-import { userStats, tableHeaders } from '../../utils/constants';
+import { userStats, tableHeaders, emptyForm } from '../../utils/constants';
 import view from '../../src/assets/icons/view.png';
 import blacklist from '../../src/assets/icons/blacklist.png';
 import activate from '../../src/assets/icons/activate.png';
@@ -35,37 +35,6 @@ function Users() {
     const formattedOrgName = (orgName: string): string => {
         return `${orgName.slice(0, 20)}`
     }
-
-
-    // -------------------------------filter popup functionality----------------------------
-    // state to store if filter is open 
-    const initialState: OpenFilterObject = {
-        organization: false,
-        username: false,
-        email: false,
-        phoneNumber: false,
-        dateJoined: false,
-        status: false,
-    }
-    const [ isOpen, setIsOpen ] = useState(initialState);
-    // function to close filter popup 
-    const closePopup = (event: React.MouseEvent<HTMLButtonElement>): void => {
-        event.preventDefault();
-        setIsOpen(initialState)
-    }
-    // function to display filters 
-    const openFilter = (column: string): void => {
-        if (!isOpen[column]) {
-            setIsOpen({
-                ...initialState,
-                [column]: true
-            })
-        } else {
-            setIsOpen(initialState);
-        }
-    }
-    // --------------------------filter popup functionality ends here-----------------------
-
 
     useEffect(() => {
 
@@ -125,21 +94,18 @@ function Users() {
     // if there is a query parameter, the default should be set to that on page load 
     const defaultToDisplay = displayed? displayed : '10'
     const [usersToDisplay, setUsersToDisplay] = useState<string>(defaultToDisplay);
-    // state to store page number for pagination 
-    // if there is a query parameter, the default should be set to that on page load 
-    const defaultIndex = pageNo? +pageNo : 1
-    const [currentPageIndex, setCurrentPageIndex] = useState<number>(defaultIndex);
     // number of pages for pagination 
     const pagesNumber = displayed? 500 / +displayed : 50;
     const[numberOfPages, setNumberOfPages] = useState<number>(pagesNumber);
-    console.log(numberOfPages);
-    
+    // state to store page number for pagination 
+    // if there is a query parameter, the default should be set to that on page load 
+    const defaultIndex = pageNo? +pageNo : 1;
+    const [currentPageIndex, setCurrentPageIndex] = useState<number>(defaultIndex);
     // first and second index for users array slice 
     const firstIndex: number = (currentPageIndex - 1) * +usersToDisplay;
     const secondIndex: number = currentPageIndex * +usersToDisplay;
     // array of users to be displayed (as selected at the bottom) 
     const usersOnPage: UserObject[] = users.slice(firstIndex, secondIndex);
-
     const [searchParams, setSearchParams] = useSearchParams();
     // Create a new URLSearchParams object from the current search parameters
     const params = new URLSearchParams(searchParams.toString());
@@ -161,6 +127,84 @@ function Users() {
         // scrollToTop();
     }
     // -----------------------------pagination functionality ends here------------------------------ 
+
+
+    // -------------------------------filter popup functionality----------------------------
+    // state to store if filter is open 
+    const initialState: OpenFilterObject = {
+        organization: false,
+        username: false,
+        email: false,
+        phoneNumber: false,
+        dateJoined: false,
+        status: false,
+    }
+    const [ isOpen, setIsOpen ] = useState(initialState);
+    const [formEntries, setFormEntries] = useState<FilterFormObject>(emptyForm);
+
+    const handleFilterSelect = (event:React.ChangeEvent<HTMLSelectElement>, input: string): void => {
+        setFormEntries({
+            ...emptyForm,
+            [input]: `${event.target.value}`
+        })
+    }
+
+    const handleFilterChange = (event:React.ChangeEvent<HTMLInputElement>, input: string): void => {
+        setFormEntries({
+            ...emptyForm,
+            [input]: `${event.target.value}`
+        })
+    }
+
+    const openFilter = (column: string): void => {
+        if (!isOpen[column]) {
+            setIsOpen({
+                ...initialState,
+                [column]: true
+            })
+        } else {
+            setIsOpen(initialState);
+        }
+    }
+    const filter = (event: React.MouseEvent<HTMLButtonElement>, formEntries: FilterFormObject): void => {
+        const filteredList = users.filter((user) => {
+            const validUsers = (user.orgName.includes(formEntries.organization))
+            return validUsers
+        })
+        setUsers(filteredList);
+        setCurrentPageIndex(1);
+        setUsersToDisplay('10');
+        if (searchParams.has('page')) {
+            searchParams.delete('page');
+            setSearchParams(searchParams);
+        }
+        if (searchParams.has('usersDisplayed')) {
+            searchParams.delete('usersDisplayed');
+            setSearchParams(searchParams);
+        }
+        if (formEntries.organization) {
+            setNumberOfPages(1);
+        }
+        
+        event.preventDefault()
+        setIsOpen(initialState)
+    }
+    const resetFilter = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setFormEntries(emptyForm)
+        const data = JSON.parse(localStorage.getItem('users')!);
+        setUsers([
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+            ...data,
+        ]);
+        setUsersToDisplay('10');
+        setNumberOfPages(50);
+        setIsOpen(initialState);
+        event.preventDefault();
+    }
+    // --------------------------filter popup functionality ends here-----------------------
     
 
     // -------------------------------user options functionality here-------------------------------------
@@ -212,7 +256,14 @@ function Users() {
                                     </div>
                                     { isOpen[header] && (
                                         <div className="filter">
-                                            <FilterForm closePopup={closePopup} />
+                                            <FilterForm 
+                                                users={users} 
+                                                filter={filter} 
+                                                resetFilter={resetFilter} 
+                                                formEntries={formEntries}
+                                                handleChange={handleFilterChange}
+                                                handleSelect={handleFilterSelect}
+                                            />
                                         </div>
                                     )}
                                 </th>

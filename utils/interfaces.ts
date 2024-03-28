@@ -58,3 +58,21 @@ export interface OpenFilterObject {
     dateJoined: boolean,
     status: boolean,
 }
+
+export interface FilterFormObject {
+    organization: string,
+    username: string,
+    email: string,
+    date: string,
+    phoneNumber: string,
+    status: string
+}
+
+export interface FilterPropObject {
+    resetFilter: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    filter: (event: React.MouseEvent<HTMLButtonElement>, formEntries: FilterFormObject) => void,
+    handleSelect: (event:React.ChangeEvent<HTMLSelectElement>, input: string) => void,
+    handleChange: (event:React.ChangeEvent<HTMLInputElement>, input: string) => void,
+    formEntries: FilterFormObject,
+    users: UserObject[],
+}

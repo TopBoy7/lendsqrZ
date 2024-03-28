@@ -1,28 +1,32 @@
-function FilterForm(props: { closePopup: (event: React.MouseEvent<HTMLButtonElement>) => void }) {
+import { FilterPropObject } from "../utils/interfaces";
+
+function FilterForm(props: FilterPropObject) {
+
     return (
         <form action="/">
             <label htmlFor="Organization">Organization</label>
-            <select>
-                <option value="Lendsqr">LendSqr</option>
-                <option value="Flutterwave">Flutterwave</option>
-                <option value="Abeg">Abeg</option>
+            <select value={props.formEntries.organization} onChange={(event) => props.handleSelect(event,'organization')}>
+                <option value="">Select</option>
+                {props.users.map((user, index) => (
+                    <option key={index} value={user.orgName}>{ user.orgName }</option>
+                ))}
             </select>
 
             <label htmlFor="Username">Username</label>
-            <input type="text" placeholder='User' />
+            <input type="text" placeholder='User' value={props.formEntries.username} onChange={(event) => props.handleChange(event,'username')} />
 
             <label htmlFor="Email">Email</label>
-            <input type="text" placeholder='Email' />
+            <input type="text" placeholder='Email' value={props.formEntries.email} onChange={(event) => props.handleChange(event,'email')}  />
 
             <label htmlFor="Date">Date</label>
-            <input type="date" placeholder='Date' />
+            <input type="date" placeholder='Date' value={props.formEntries.date} onChange={(event) => props.handleChange(event,'date')}  />
 
             <label htmlFor="Phone Number">Phone Number</label>
-            <input type="text" placeholder='Phone Number' />
+            <input type="text" placeholder='Phone Number' value={props.formEntries.phoneNumber} onChange={(event) => props.handleChange(event,'phone number')}  />
 
-            <label htmlFor="Organisation">Status</label>
-            <select>
-                <option value="Select">Select</option>
+            <label htmlFor="Status">Status</label>
+            <select value={props.formEntries.status} onChange={(event) => props.handleSelect(event,'status')} >
+                <option value="">Select</option>
                 <option value="Inactive">Inactive</option>
                 <option value="Pending">Pending</option>
                 <option value="Active">Active</option>
@@ -31,11 +35,11 @@ function FilterForm(props: { closePopup: (event: React.MouseEvent<HTMLButtonElem
 
             <div className="buttons">
                 <div className="button-div">
-                    <button onClick={props.closePopup}>Reset</button>
+                    <button onClick={props.resetFilter}>Reset</button>
                 </div>
                 
                 <div className="button-div">
-                    <button onClick={props.closePopup}>Filter</button>
+                    <button onClick={(event) => props.filter(event, props.formEntries)}>Filter</button>
                 </div>
             </div>
         </form>
