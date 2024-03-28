@@ -5,6 +5,7 @@ This is a 3 page web app with a:
 - Login Page.
 - Users Page.
 - User Details Page.
+
 The instruction was to implement the design with keen attention to details and I did just that while adding a bit of extra functionality myself.
 
 ## Links
