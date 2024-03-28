@@ -1,30 +1,24 @@
-# React + TypeScript + Vite
+# Lendsqr Frontend Engineering test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Brief Description
+This is a 3 page web app with a:
+-Login Page.
+-Users Page.
+-User Details Page.
+The instruction was to implement the design with keen attention to details and I did just that while adding a bit of extra functionality myself.
 
-Currently, two official plugins are available:
+## Links
+-Figma Link: [Figma](: https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting?node-id=5530%3A0 )
+-Live URL: [Daniel Obode Lendsqr Frontend Engineering Assessment](https://daniel-obode-lendsqr-fe-test.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+-React.js
+-SCSS.
+-Typescript.
+-Jest.
+-React Testing Library.
+-Material UI Icons.
+-Axios.
+-Vite.
+-LocalStorage.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
