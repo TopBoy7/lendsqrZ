@@ -37,7 +37,7 @@ function SideMenu() {
             <div className="link">
                 <img src={briefcase} alt="briefcase" />
                 <p className='switch'>Switch Organization</p>
-                <KeyboardArrowDownOutlinedIcon />
+                <KeyboardArrowDownOutlinedIcon className='dropdown-icon' />
             </div>
 
             <div className="link">

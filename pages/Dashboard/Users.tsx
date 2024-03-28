@@ -178,6 +178,14 @@ function Users() {
     const viewUser = (user: UserObject): void => {
         navigate(`${user.id}`);
     }
+    const blacklistUser = (user: UserObject): void => {
+        user['status'] = 'Blacklisted';
+        setShowOptions(0);
+    }
+    const activateUser = (user: UserObject): void => {
+        user['status'] = 'Active';
+        setShowOptions(0);
+    }
     // -------------------------------user options functionality ends here-----------------------------
 
 
@@ -233,11 +241,11 @@ function Users() {
                                             <img src={view} alt="view details icon" />
                                             <p>View Details</p>
                                         </div>
-                                        <div className="option">
-                                            <img src={blacklist} alt="blacklist user icon" />
+                                        <div className="option" onClick={() => blacklistUser(user)} >
+                                            <img src={blacklist} alt="blacklist user icon"/>
                                             <p>Blacklist User</p>
                                         </div>
-                                        <div className="option">
+                                        <div className="option" onClick={() => activateUser(user)} >
                                             <img src={activate} alt="activate user icon" />
                                             <p>Activate User</p>
                                         </div>
@@ -254,8 +262,8 @@ function Users() {
                     <p>Showing 
                         <select value={ usersToDisplay } onChange={ handleSelect }>
                             <option value="10">10</option>
+                            <option value="20">20</option>
                             <option value="25">25</option>
-                            <option value="50">50</option>
                         </select>
                         out of { users.length }
                     </p>

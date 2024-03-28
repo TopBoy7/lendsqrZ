@@ -21,19 +21,25 @@ div.aside {
         align-items: center;
         padding: 0rem 1.5rem;
         cursor: pointer;
+        transition: all 0.5s ease-out;
 
-        &:nth-of-type(1) {
-            padding: 1rem 1.5rem;
-            margin-top: 1.5rem;
+        &:hover {
+            background-color: #39cdcc1a;
         }
 
         p {
             font-weight: 500;
             font-size: 0.8rem;
+            opacity: 50%;
         }
 
-        .inactive {
-            opacity: 50%;
+        &:nth-of-type(1) {
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+
+            p {
+                opacity: 100%;
+            }
         }
 
         * {
@@ -52,9 +58,16 @@ div.aside {
             margin-top: 3rem;
             margin-bottom: 2rem;
             
-            .inactive {
+            p {
                 opacity: 100%;
             }
+
+            &:hover {
+                background-color: #FFF;
+            }
+        }
+        .dropdown-icon {
+            margin-right: 0;
         }
     }
 
@@ -76,7 +89,7 @@ div.aside {
         background-color: #39cdcc1a;
         border-left: 5px solid $Cyan;
 
-        .inactive {
+        p {
             opacity: 100%;
             font-weight: 600;
         }
