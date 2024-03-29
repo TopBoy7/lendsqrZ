@@ -35,7 +35,7 @@ function SideMenu() {
     return (
         <Fragment>
             
-            <div className='aside'>
+            <div data-testid='side-nav' className='aside'>
 
                 <div className="link">
                     <img src={briefcase} alt="briefcase" />

@@ -279,7 +279,7 @@ function Users() {
                                 </thead>
                                 <tbody>
                                     {usersOnPage.map((user, index) => (
-                                        <tr key={index}>
+                                        <tr role='table-body-row' key={index}>
                                             <td>{ formattedOrgName(user.orgName) }</td>
                                             <td>{ user.userName }</td>
                                             <td>{ user.email }</td>

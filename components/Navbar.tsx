@@ -7,7 +7,7 @@ function Navbar(props: {navIsOpen: boolean, toggleNav:() => void}) {
 
 
     return (
-        <nav>
+        <nav data-testid='navbar'>
             <div className="logo-div">
                 <img src={logo} alt="company logo" className='desktop' />
                 <div className="mid mobile">
