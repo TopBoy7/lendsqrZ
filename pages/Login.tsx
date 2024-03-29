@@ -69,7 +69,7 @@ function Login() {
                                 <p>{ error }</p>
                             </div>
                         )}
-                        <form action="/">
+                        <form action="/" data-testid='login-form'>
                             <input type="text" placeholder='Email' value={email} onChange={handleEmailChange} />
                             <div className="password">
                                 <input type={showPassword ? 'text' : 'password'} placeholder='Password' value={password} onChange={handlePasswordChange} />

@@ -21,7 +21,7 @@ div.login-row {
         padding: 3rem;
         display: flex;
         align-items: center;
-        font-family: 'Avenir Regular', sans-serif;
+        font-family: 'Avenir Regular', 'Work Sans', sans-serif;
 
         &:nth-of-type(1) {
             justify-content: center;
@@ -110,6 +110,7 @@ div.login-row {
                     h6 {
                         position: absolute;
                         right: 1rem;
+                        font-family: 'Avenir Bold', sans-serif;
                         bottom: 1rem;
                         color: $Cyan;
                         margin: 0 !important;
@@ -118,6 +119,7 @@ div.login-row {
                 }
                 .forgot {
                     cursor: pointer;
+                    font-family: 'Avenir Bold', sans-serif;
 
                     &:hover {
                         text-decoration: underline;

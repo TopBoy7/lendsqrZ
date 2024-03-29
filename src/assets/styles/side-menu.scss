@@ -108,3 +108,17 @@ div.aside {
     }
 
 }
+
+@media (min-width: 1367px) {
+    div.aside {
+        .link {
+            p {
+                font-size: 1rem;
+            }
+
+            .switch {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

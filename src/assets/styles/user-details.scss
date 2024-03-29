@@ -356,3 +356,17 @@ div.user-details {
         }
     }
 }
+
+@media (min-width: 1367px) {
+    div.user-details {
+        .basic-info {
+            .links {
+                .link {
+                    p {
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+    }
+}
