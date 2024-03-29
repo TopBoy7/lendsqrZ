@@ -34,7 +34,7 @@ function UserDetails() {
             return;
 
         } else {
-            // if nothing in local Storage, get user data through api call 
+            // this logic is to prevent an empty page in case a user enters the user details url directly into the browser
             const getUsers = async () => {
                 try {
                     setIsloading(true);
